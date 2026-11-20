@@ -83,7 +83,7 @@ Sin protección, cada cuadro que detecta el código podría encolar otro `push` 
 
 ### C3. Deep links y rutas protegidas
 
-Verifiqué los equivalentes en Chrome. Queda por probar el historial nativo y el estado real de la cámara en Expo Go. Las URLs de Expo Go están en el [README](README.md#deep-links-de-prueba).
+Verifiqué los equivalentes en Chrome. En Expo Go para Android se documentó el escáner con la cámara concedida y la ficha del ISBN probado. Queda por comprobar el historial de los enlaces nativos y el acceso desde un enlace con la cámara bloqueada. [Capturas de Android](README.md#android-con-expo-go) · [URLs de Expo Go](README.md#deep-links-de-prueba)
 
 | Link | Qué muestra | Qué queda debajo, según la configuración | Código |
 | --- | --- | --- | --- |
@@ -156,7 +156,7 @@ La configuración de cámara tiene `"microphonePermission": false` y `"recordAud
 
 Para elegir una portada usaría `expo-image-picker` con `launchImageLibraryAsync` y solo imágenes. El selector del sistema concede acceso a la imagen elegida sin pedir acceso general a la galería. Se necesita una build nueva porque la versión instalada de la app todavía no incluye ese módulo nativo. Una OTA distribuye solo JavaScript y recursos que el binario instalado pueda usar. [Expo ImagePicker](https://docs.expo.dev/versions/v58.0.0/sdk/imagepicker/) · [Selector de fotos de Android](https://developer.android.com/privacy-and-security/minimize-permission-requests)
 
-Expo Go usa su propio binario y configuración. Con una instalación de desarrollo propia verificaría la frase del diálogo de iOS, el manifiesto combinado de Android, el canal `prestamos` y el esquema `bibliotecaipf://`. Verifiqué la frase de cámara y las exclusiones del manifiesto con la configuración de Expo. El comportamiento del canal y de los diálogos queda pendiente en el teléfono.
+Expo Go usa su propio binario y configuración. Las capturas de Android muestran avisos locales recibidos en Expo Go. Con una instalación de desarrollo propia verificaría la frase del diálogo de iOS, el manifiesto combinado de Android, el canal `prestamos` y el esquema `bibliotecaipf://`. Verifiqué la frase de cámara y las exclusiones del manifiesto con la configuración de Expo. [Capturas de Android](README.md#android-con-expo-go)
 
 ## Parte E · Buenas prácticas y decisiones de diseño
 

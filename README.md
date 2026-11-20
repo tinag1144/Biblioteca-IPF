@@ -106,7 +106,9 @@ tsc --noEmit exit: 0
 
 Expo también generó los bundles de JavaScript para Android e iOS con `npx expo export --platform android --platform ios`.
 
-Las [capturas](evidencias/web) corresponden a Chrome con vista de 390 × 844. En el catálogo se controló el azar de la API simulada durante la prueba para reproducir la falla y el reintento.
+### Chrome
+
+Las [capturas web](evidencias/web) corresponden a Chrome con vista de 390 × 844. En el catálogo se controló el azar de la API simulada durante la prueba para reproducir la falla y el reintento.
 
 | Flujo | Capturas |
 | --- | --- |
@@ -116,7 +118,16 @@ Las [capturas](evidencias/web) corresponden a Chrome con vista de 390 × 844. En
 | Mostrador | [Antes de entregar](evidencias/web/09-mostrador-antes.png) · [Después de entregar](evidencias/web/10-mostrador-despues.png) · [Aviso en la app](evidencias/web/11-aviso-de-entrega.png) |
 | ISBN y rutas | [ISBN manual desconocido](evidencias/web/12-isbn-manual-inexistente.png) · [Detalle inexistente](evidencias/web/13-detalle-inexistente.png) · [404](evidencias/web/14-no-encontrada.png) |
 
-Queda pendiente probar en Expo Go con un teléfono real y capturar los cuatro estados del permiso de cámara, la lectura de las contratapas y una notificación recibida. El [análisis de rutas y permisos](RESPUESTAS.md#c3-deep-links-y-rutas-protegidas) indica el resultado esperado de esas pruebas.
+### Android con Expo Go
+
+| Captura | Qué muestra |
+| --- | --- |
+| [Escáner con permiso de cámara concedido](evidencias/android/01-escaner-camara-concedida.jpeg) | El visor activo apunta al código EAN-13 de prueba de *Don Quijote de la Mancha*. |
+| [Ficha del ISBN escaneado](evidencias/android/02-ficha-isbn-escaneado.jpeg) | La ficha de *Don Quijote de la Mancha* muestra el ISBN `9780142437230` y tres ejemplares disponibles. |
+| [Recordatorio de devolución sobre Mis reservas](evidencias/android/03-recordatorio-banner-en-mis-reservas.jpeg) | El banner de Android avisa que hay que devolver *Frankenstein*. La pantalla muestra las notificaciones habilitadas y **Recordarme** activo. |
+| [Recordatorios en el panel de Android](evidencias/android/04-recordatorios-panel-de-android.jpeg) | El panel reúne dos avisos recibidos, uno para *Frankenstein* y otro para *Jane Eyre*. |
+
+Quedan por documentar con capturas los estados de cámara **cargando**, **preguntable** y **bloqueado**. El [análisis de permisos](RESPUESTAS.md#d1-recorrido-completo-de-la-cámara) describe qué muestra cada estado.
 
 Para verificar la cancelación en el teléfono, activá **Recordarme** y esperá el aviso de prueba programado a los 15 segundos. Después activalo en otro préstamo y apagalo o devolvé ese libro antes de los 15 segundos. El aviso de ese préstamo debe quedar cancelado.
 
