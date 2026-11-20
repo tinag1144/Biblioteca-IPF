@@ -124,12 +124,12 @@ Recorrido esperado en Android 14 con la app recién instalada. **Escanear** mues
 En iOS el cambio ocurre desde la primera denegación. El sistema recuerda esa decisión y la próxima visita muestra el estado bloqueado y permite abrir Ajustes desde la previa. El campo de ISBN sigue disponible. [Autorización de captura en iOS](https://developer.apple.com/documentation/avfoundation/requesting-authorization-to-capture-and-save-media)
 
 ~~~tsx
-<Boton texto={estado === 'bloqueado' && Platform.OS !== 'web' ? 'Abrir Ajustes' : 'Continuar'}
+<Boton texto={abrirAjustes ? 'Abrir Ajustes' : 'Continuar'}
 ~~~
 
-El estado `bloqueado` viene de `canAskAgain === false` cuando `granted` también es falso. Las dos denegaciones pueden compartir `status: 'denied'` mientras difieren en la posibilidad de volver a abrir el diálogo. [Botón de la previa](src/app/permisos/%5Brecurso%5D.tsx#L105) · [Clasificación](src/hooks/usePermiso.ts#L11-L14)
+El estado `bloqueado` viene de `canAskAgain === false` cuando `granted` también es falso. Las dos denegaciones pueden compartir `status: 'denied'` mientras difieren en la posibilidad de volver a abrir el diálogo. [Botón de la previa](src/app/permisos/%5Brecurso%5D.tsx#L111) · [Clasificación](src/hooks/usePermiso.ts#L11-L14)
 
-Al volver de Ajustes, `AppState` vuelve a leer el permiso. Si ahora está concedido, la previa detecta el cambio y se cierra. Sin esa relectura podría mantenerse **Abrir Ajustes** hasta salir y volver a enfocar la pantalla. [Listener](src/hooks/usePermiso.ts#L43-L51) · [Regreso de Ajustes](src/app/permisos/%5Brecurso%5D.tsx#L39-L50)
+Al volver de Ajustes, `AppState` vuelve a leer el permiso. Si ahora está concedido, la previa detecta el cambio y se cierra. Sin esa relectura podría mantenerse **Abrir Ajustes** hasta salir y volver a enfocar la pantalla. [Listener](src/hooks/usePermiso.ts#L43-L51) · [Regreso de Ajustes](src/app/permisos/%5Brecurso%5D.tsx#L41-L52)
 
 ### D2. Notificaciones y consistencia
 
@@ -137,9 +137,9 @@ a) Si devolviera sin cancelar, podría llegar a los 15 segundos un aviso sobre u
 
 b) El identificador está en `prestamos[isbn].recordatorio`. El sistema puede conservar lo programado al cerrar el proceso, mientras el identificador en memoria se pierde al reiniciar la app. Persistiría los dos datos juntos, esperaría a leerlos antes de mostrar Mis reservas y reconciliaría los identificadores con el listado del sistema. [Tipo Prestamo](src/types/index.ts#L9-L13) · [Actualización del préstamo](src/context/BibliotecaContext.tsx#L66-L79)
 
-c) En Android 13 en adelante existe `POST_NOTIFICATIONS` en tiempo de ejecución y Expo indica preparar el canal antes de pedir el permiso. En Android 12 no existe ese permiso en tiempo de ejecución. El canal sigue siendo necesario para definir cómo se muestra el aviso y se puede desactivar en Ajustes. [Orden en el código](src/lib/notificaciones.ts#L20-L43) · [Expo Notifications](https://docs.expo.dev/versions/v58.0.0/sdk/notifications/#permissions) · [Android](https://developer.android.com/develop/ui/compose/notifications/notification-permission)
+c) En Android 13 en adelante existe `POST_NOTIFICATIONS` en tiempo de ejecución y Expo indica preparar el canal antes de pedir el permiso. En Android 12 no existe ese permiso en tiempo de ejecución. El canal sigue siendo necesario para definir cómo se muestra el aviso y se puede desactivar en Ajustes. [Orden en el código](src/lib/notificaciones.ts#L20-L46) · [Expo Notifications](https://docs.expo.dev/versions/v58.0.0/sdk/notifications/#permissions) · [Android](https://developer.android.com/develop/ui/compose/notifications/notification-permission)
 
-d) Al entregar, `notificarEntrega` llama a `consultarNotificaciones()` en ese instante y devuelve `false` si el permiso no está concedido. Si devuelve `false` o falla, la app agrega el aviso al Context y lo muestra en Mis reservas. La consulta actual importa si la persona cambió el permiso en Ajustes durante la sesión. [Consulta y notificación](src/lib/notificaciones.ts#L61-L69) · [Aviso alternativo](src/context/BibliotecaContext.tsx#L99-L113) · [Avisos de entrega](src/app/%28tabs%29/reservas.tsx#L58-L62)
+d) Al entregar, `notificarEntrega` llama a `consultarNotificaciones()` en ese instante y devuelve `false` si el permiso no está concedido. Si devuelve `false` o falla, la app agrega el aviso al Context y lo muestra en Mis reservas. La consulta actual importa si la persona cambió el permiso en Ajustes durante la sesión. [Consulta y notificación](src/lib/notificaciones.ts#L64-L72) · [Aviso alternativo](src/context/BibliotecaContext.tsx#L99-L113) · [Avisos de entrega](src/app/%28tabs%29/reservas.tsx#L58-L62)
 
 ### D3. Lo que la app declara
 
@@ -229,8 +229,8 @@ Un `<ConPermiso recurso="camara">` podría encapsular el visor con su carga y su
 | Falla `obtenerLibros()` | «No pudimos cargar el catálogo» y Reintentar. | [Captura del fallo](src/hooks/useLibros.ts#L19-L21) · [Catálogo](src/app/%28tabs%29/%28catalogo%29/index.tsx#L23-L27) |
 | Abre `/libro/abc` | Aviso y Volver al Catálogo. | [Detalle](src/app/%28tabs%29/%28catalogo%29/libro/%5Bisbn%5D.tsx#L14-L30) |
 | Escanea un ISBN desconocido | Aviso con el ISBN, visor disponible para otro código e ingreso manual. | [Escáner](src/app/escanear.tsx#L29-L43) |
-| Cámara bloqueada | Ver ajustes de cámara e ingreso manual. | [Bloqueo](src/app/escanear.tsx#L61-L71) · [Ajustes](src/app/permisos/%5Brecurso%5D.tsx#L58-L62) |
-| Notificaciones denegadas | Vencimientos y avisos de entrega en Mis reservas. | [Previa](src/app/permisos/%5Brecurso%5D.tsx#L63-L69) · [Mis reservas](src/app/%28tabs%29/reservas.tsx#L49-L62) |
+| Cámara bloqueada | Ver ajustes de cámara e ingreso manual. | [Bloqueo](src/app/escanear.tsx#L61-L71) · [Ajustes](src/app/permisos/%5Brecurso%5D.tsx#L60-L64) |
+| Notificaciones denegadas | Vencimientos y avisos de entrega en Mis reservas. | [Previa](src/app/permisos/%5Brecurso%5D.tsx#L65-L71) · [Mis reservas](src/app/%28tabs%29/reservas.tsx#L49-L62) |
 | Reserva repetida | Botón deshabilitado en la ficha. Un enlace directo a la confirmación informa «Ya reservaste este libro». | [Confirmación](src/app/reservar/%5Bisbn%5D.tsx#L24-L43) · [Guarda de la operación](src/lib/biblioteca.ts#L51-L53) |
 | Entrega con la lista vacía | La fila desaparece. Un toque antes de actualizar la pantalla devuelve el mensaje de que ya no queda nadie. | [Mostrador](src/app/mostrador.tsx#L10-L38) · [Context](src/context/BibliotecaContext.tsx#L99-L102) |
 | Login con clave incorrecta | «Revisá el usuario y la clave» y puede volver a ingresar sus datos. | [Login](src/app/login.tsx#L13-L29) |

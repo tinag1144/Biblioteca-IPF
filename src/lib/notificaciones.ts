@@ -38,7 +38,10 @@ export async function consultarNotificaciones() {
 export async function pedirNotificaciones() {
   if (Platform.OS === 'web') return consultarNotificaciones();
   await prepararCanal();
-  await Notifications.requestPermissionsAsync();
+  await Notifications.requestPermissionsAsync({
+    android: {},
+    ios: { allowAlert: true, allowSound: true },
+  });
   return consultarNotificaciones();
 }
 

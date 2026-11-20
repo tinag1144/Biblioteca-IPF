@@ -120,6 +120,8 @@ Queda pendiente probar en Expo Go con un teléfono real y capturar los cuatro es
 
 Para verificar la cancelación en el teléfono, activá **Recordarme** y esperá el aviso de prueba programado a los 15 segundos. Después activalo en otro préstamo y apagalo o devolvé ese libro antes de los 15 segundos. El aviso de ese préstamo debe quedar cancelado.
 
+Si el diálogo de notificaciones falla en Expo Go, tocá **Abrir Ajustes**, habilitá las notificaciones de **Expo Go** y volvé a Biblioteca IPF. La app vuelve a consultar el permiso y programa el recordatorio si lo habilitaste.
+
 ## Análisis
 
 [Respuestas de las partes B a E](RESPUESTAS.md).

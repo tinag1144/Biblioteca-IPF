@@ -18,10 +18,12 @@ export default function Permiso() {
   const { solicitud, setSolicitud, activarRecordatorio, avisar } = useBiblioteca();
   const libro = buscarPorIsbn(solicitud);
   const [ocupado, setOcupado] = useState(false);
-  const [errorAccion, setErrorAccion] = useState(false);
+  const [errorAccion, setErrorAccion] = useState<'solicitud' | 'ajustes' | null>(null);
   const [enAjustes, setEnAjustes] = useState(false);
   const vigente = useRef(false);
   const operando = useRef(false);
+  const abrirAjustes = Platform.OS !== 'web' &&
+    (estado === 'bloqueado' || (notificaciones && errorAccion !== null && estado !== 'concedido'));
 
   useEffect(() => {
     vigente.current = true;
@@ -53,9 +55,9 @@ export default function Permiso() {
     if (operando.current) return;
     operando.current = true;
     setOcupado(true);
-    setErrorAccion(false);
+    if (!abrirAjustes) setErrorAccion(null);
     try {
-      if (estado === 'bloqueado' && Platform.OS !== 'web') {
+      if (abrirAjustes) {
         setEnAjustes(true);
         await Linking.openSettings();
         return;
@@ -70,7 +72,7 @@ export default function Permiso() {
     } catch {
       if (vigente.current) {
         setEnAjustes(false);
-        setErrorAccion(true);
+        setErrorAccion(abrirAjustes ? 'ajustes' : 'solicitud');
       }
     } finally {
       operando.current = false;
@@ -101,8 +103,12 @@ export default function Permiso() {
         <Text style={comun.cuerpo}>{camara
           ? 'Usamos tu cámara para leer el ISBN de un libro y abrir su ficha.'
           : 'Usamos tus notificaciones para recordarte cuándo devolver un libro.'}</Text>
-        {errorAccion && <Text accessibilityRole="alert" style={comun.etiqueta}>No pudimos completar la acción. Intentá de nuevo.</Text>}
-        <Boton texto={estado === 'bloqueado' && Platform.OS !== 'web' ? 'Abrir Ajustes' : 'Continuar'}
+        {errorAccion && <Text accessibilityRole="alert" style={comun.etiqueta}>
+          {errorAccion === 'ajustes' ? 'No pudimos abrir Ajustes. Podés intentarlo de nuevo.'
+            : notificaciones ? 'El teléfono no abrió el permiso. Podés habilitar las notificaciones desde Ajustes.'
+              : 'No pudimos abrir el permiso de cámara. Intentá de nuevo.'}
+        </Text>}
+        <Boton texto={abrirAjustes ? 'Abrir Ajustes' : 'Continuar'}
           deshabilitado={ocupado} accion={() => { void continuar(); }} />
       </View>
     </Pagina>
