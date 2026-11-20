@@ -71,7 +71,7 @@ export default function Escanear() {
               : falloCamara
                 ? <EstadoVista titulo="No pudimos abrir la cámara." boton={{ texto: 'Reintentar', accion: () => setFalloCamara(false) }} />
                 : enFoco && <View style={estilos.marco}>
-                    <CameraView style={estilos.camara} facing="back" barcodeScannerSettings={{ barcodeTypes: ['ean13'] }}
+                    <CameraView style={StyleSheet.absoluteFill} facing="back" barcodeScannerSettings={{ barcodeTypes: ['ean13'] }}
                       onBarcodeScanned={leerCodigo} onMountError={() => setFalloCamara(true)} />
                     <View pointerEvents="none" style={estilos.visor} />
                   </View>}
@@ -92,6 +92,5 @@ const estilos = StyleSheet.create({
     height: medida.camara, overflow: 'hidden', borderRadius: radio.l,
     backgroundColor: color.tinta, alignItems: 'center', justifyContent: 'center',
   },
-  camara: { ...StyleSheet.absoluteFillObject },
   visor: { width: '70%', height: medida.visor, borderWidth: 2, borderColor: color.papel, borderRadius: radio.l },
 });

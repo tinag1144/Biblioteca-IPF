@@ -23,6 +23,7 @@ export function usePermiso(recurso: Recurso) {
   const pedir = recurso === 'camara' ? pedirCamara : pedirNotificaciones;
 
   useFocusEffect(useCallback(() => {
+    if (intento > 0) setError(false);
     let vigente = true;
     let version = 0;
     async function actualizar() {

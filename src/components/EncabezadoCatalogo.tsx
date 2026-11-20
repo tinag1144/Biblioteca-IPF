@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -22,8 +22,7 @@ export default function EncabezadoCatalogo() {
       </View>
       <View style={estilos.hero}>
         <View style={estilos.editorial}>
-          <Text accessibilityRole="header" style={estilos.titulo}>Tu próxima{'
-'}lectura</Text>
+          <Text accessibilityRole="header" style={estilos.titulo}>Tu próxima{'\n'}lectura</Text>
           <Text style={comun.cuerpo}>Encontrá y reservá libros del Instituto.</Text>
         </View>
         <View accessible={false} style={estilos.ilustracion}>
@@ -67,7 +66,7 @@ const estilos = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth, borderColor: color.borde, overflow: 'hidden',
   },
   editorial: { flex: 1, gap: espacio.s },
-  titulo: { fontFamily: letra.serif, fontSize: letra.hero, lineHeight: 41, color: color.tinta },
+  titulo: { fontFamily: letra.serif, fontSize: letra.hero, lineHeight: letra.interlineadoHero, color: color.tinta },
   ilustracion: {
     width: medida.dibujo, height: medida.dibujo, flexDirection: 'row', alignItems: 'flex-end',
     justifyContent: 'center', gap: espacio.xs, paddingBottom: espacio.l, borderRadius: radio.redondo,
@@ -75,11 +74,11 @@ const estilos = StyleSheet.create({
   },
   brillo: { position: 'absolute', top: espacio.s, right: espacio.l },
   lomo: { width: medida.libro, borderRadius: radio.s, borderWidth: StyleSheet.hairlineWidth, borderColor: color.tenue },
-  lomoRosa: { height: 68, backgroundColor: '#BF8294', transform: [{ rotate: '-9deg' }] },
-  lomoCrema: { height: 80, backgroundColor: color.papel },
-  lomoVerde: { height: 55, backgroundColor: '#B6C5AD', transform: [{ rotate: '10deg' }] },
+  lomoRosa: { height: medida.lomos[0], backgroundColor: color.lomoRosa, transform: [{ rotate: '-9deg' }] },
+  lomoCrema: { height: medida.lomos[1], backgroundColor: color.papel },
+  lomoVerde: { height: medida.lomos[2], backgroundColor: color.lomoVerde, transform: [{ rotate: '10deg' }] },
   banda: { marginTop: espacio.l, height: espacio.s, borderTopWidth: 1, borderBottomWidth: 1, borderColor: color.tenue },
   recientes: { gap: espacio.s },
   carrusel: { gap: espacio.s },
-  reciente: { width: 236 },
+  reciente: { width: medida.tarjetaReciente },
 });

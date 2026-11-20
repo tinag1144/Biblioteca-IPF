@@ -1,16 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router/js-tabs';
 
-import { color, letra, medida } from '@/constants/tema';
+import { color, encabezado, medida } from '@/constants/tema';
 
 export const unstable_settings = { anchor: '(catalogo)' };
 
 export default function LayoutTabs() {
   return (
     <Tabs backBehavior="initialRoute" screenOptions={{
-      headerStyle: { backgroundColor: color.papel },
-      headerTintColor: color.rosaFuerte,
-      headerTitleStyle: { fontFamily: letra.serif },
+      ...encabezado,
       tabBarActiveTintColor: color.rosaFuerte,
       tabBarInactiveTintColor: color.tenue,
       tabBarStyle: { backgroundColor: color.papel, borderTopColor: color.borde },
@@ -18,11 +16,11 @@ export default function LayoutTabs() {
       <Tabs.Screen name="(catalogo)" options={{
         title: 'Catálogo',
         headerShown: false,
-        tabBarIcon: ({ color }) => <Ionicons name="book-outline" color={color} size={medida.icono} />,
+        tabBarIcon: ({ focused }) => <Ionicons name="book-outline" color={focused ? color.rosaFuerte : color.tenue} size={medida.icono} />,
       }} />
       <Tabs.Screen name="reservas" options={{
         title: 'Mis reservas',
-        tabBarIcon: ({ color }) => <Ionicons name="bookmark-outline" color={color} size={medida.icono} />,
+        tabBarIcon: ({ focused }) => <Ionicons name="bookmark-outline" color={focused ? color.rosaFuerte : color.tenue} size={medida.icono} />,
       }} />
     </Tabs>
   );

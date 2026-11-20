@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { color, espacio, letra, medida, radio } from '@/constants/tema';
@@ -19,6 +19,7 @@ export default function Boton({
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={texto}
       accessibilityState={{ disabled: deshabilitado }}
       disabled={deshabilitado}
       onPress={accion}

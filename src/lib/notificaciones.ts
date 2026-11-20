@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { AndroidImportance, IosAuthorizationStatus } from 'expo-notifications';
 import { Platform } from 'react-native';
 
 const CANAL = 'prestamos';
@@ -20,7 +21,7 @@ async function prepararCanal() {
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(CANAL, {
       name: 'Préstamos de biblioteca',
-      importance: Notifications.AndroidImportance.HIGH,
+      importance: AndroidImportance.HIGH,
     });
   }
 }
@@ -29,7 +30,7 @@ export async function consultarNotificaciones() {
   if (Platform.OS === 'web') return { granted: false, canAskAgain: false };
   const permiso = await Notifications.getPermissionsAsync();
   return {
-    granted: permiso.granted || permiso.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL,
+    granted: permiso.granted || permiso.ios?.status === IosAuthorizationStatus.PROVISIONAL,
     canAskAgain: permiso.canAskAgain,
   };
 }
