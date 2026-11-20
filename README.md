@@ -126,8 +126,11 @@ Las [capturas web](evidencias/web) corresponden a Chrome con vista de 390 × 844
 | [Ficha del ISBN escaneado](evidencias/android/02-ficha-isbn-escaneado.jpeg) | La ficha de *Don Quijote de la Mancha* muestra el ISBN `9780142437230` y tres ejemplares disponibles. |
 | [Recordatorio de devolución sobre Mis reservas](evidencias/android/03-recordatorio-banner-en-mis-reservas.jpeg) | El banner de Android avisa que hay que devolver *Frankenstein*. La pantalla muestra las notificaciones habilitadas y **Recordarme** activo. |
 | [Recordatorios en el panel de Android](evidencias/android/04-recordatorios-panel-de-android.jpeg) | El panel reúne dos avisos recibidos, uno para *Frankenstein* y otro para *Jane Eyre*. |
+| [Escáner con permiso de cámara preguntable](evidencias/android/05-escaner-camara-preguntable.jpeg) | El escáner ofrece **Habilitar cámara** y mantiene disponible el ingreso manual de ISBN. |
+| [Pantalla previa al permiso de cámara](evidencias/android/06-pantalla-previa-permiso-camara.jpeg) | Biblioteca IPF explica para qué usa la cámara y ofrece **Continuar**. |
+| [Diálogo de Android para el permiso de cámara](evidencias/android/07-dialogo-android-permiso-camara.jpeg) | Después de **Continuar**, Android muestra el diálogo de Expo Go con opciones para permitir o denegar el acceso. |
 
-Quedan por documentar con capturas los estados de cámara **cargando**, **preguntable** y **bloqueado**. El [análisis de permisos](RESPUESTAS.md#d1-recorrido-completo-de-la-cámara) describe qué muestra cada estado.
+Quedan por documentar con capturas los estados de cámara **cargando** y **bloqueado**. El [análisis de permisos](RESPUESTAS.md#d1-recorrido-completo-de-la-cámara) describe qué muestra cada estado.
 
 Para verificar la cancelación en el teléfono, activá **Recordarme** y esperá el aviso de prueba programado a los 15 segundos. Después activalo en otro préstamo y apagalo o devolvé ese libro antes de los 15 segundos. El aviso de ese préstamo debe quedar cancelado.
 

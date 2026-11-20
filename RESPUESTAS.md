@@ -112,6 +112,8 @@ Al volver de Ajustes suele seguir enfocada la misma pantalla, de modo que el eve
 
 Recorrido esperado en Android 14 con la app recién instalada. **Escanear** muestra el ingreso manual y el estado de la cámara. **Habilitar cámara** abre la previa. [Escáner, líneas 54–85](src/app/escanear.tsx#L54-L85) · [Permisos en Android](https://developer.android.com/training/permissions/requesting)
 
+En Expo Go para Android quedó documentado el estado preguntable, la pantalla previa y el diálogo del sistema que aparece al tocar **Continuar**. [Capturas de Android](README.md#android-con-expo-go)
+
 | Paso | Qué muestra la app | `status` esperado | `canAskAgain` esperado |
 | --- | --- | --- | --- |
 | 1. Toca Escanear | Indicador breve y luego Habilitar cámara. Al tocarlo se abre la previa con Continuar. | `undetermined` después de la consulta | `true` |
