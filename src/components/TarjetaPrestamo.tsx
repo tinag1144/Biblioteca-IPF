@@ -9,11 +9,12 @@ const fecha = new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long', 
 type Props = {
   libro: Libro;
   prestamo: Prestamo;
+  procesando: boolean;
   cambiarRecordatorio: (activo: boolean) => void;
   devolver: () => void;
 };
 
-export default function TarjetaPrestamo({ libro, prestamo, cambiarRecordatorio, devolver }: Props) {
+export default function TarjetaPrestamo({ libro, prestamo, procesando, cambiarRecordatorio, devolver }: Props) {
   return (
     <View style={comun.tarjeta}>
       <Text style={comun.subtitulo}>{libro.titulo}</Text>
@@ -21,11 +22,11 @@ export default function TarjetaPrestamo({ libro, prestamo, cambiarRecordatorio, 
       <View style={comun.fila}>
         <Text style={[comun.cuerpo, comun.flexible]}>Recordarme</Text>
         <Switch accessibilityLabel={`Recordarme la devolución de ${libro.titulo}`}
-          value={Boolean(prestamo.recordatorio)} onValueChange={cambiarRecordatorio}
+          disabled={procesando} value={Boolean(prestamo.recordatorio)} onValueChange={cambiarRecordatorio}
           trackColor={{ false: color.borde, true: color.rosaFuerte }}
           style={estilos.interruptor} />
       </View>
-      <Boton texto="Devolver" variante="suave" icono="return-down-back-outline" accion={devolver} />
+      <Boton texto="Devolver" variante="suave" icono="return-down-back-outline" deshabilitado={procesando} accion={devolver} />
     </View>
   );
 }

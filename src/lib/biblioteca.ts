@@ -10,6 +10,7 @@ export type EstadoBiblioteca = {
   ajustesStock: Record<string, number>;
   sesion: boolean;
   aviso: string | null;
+  avisosEntrega: string[];
 };
 
 export function crearBiblioteca(): EstadoBiblioteca {
@@ -22,6 +23,7 @@ export function crearBiblioteca(): EstadoBiblioteca {
     ajustesStock: {},
     sesion: false,
     aviso: null,
+    avisosEntrega: [],
   };
 }
 

@@ -13,7 +13,7 @@ import type { Libro } from '@/types';
 
 export default function MisReservas() {
   const {
-    estado, setSolicitud, activarRecordatorio, desactivarRecordatorio, devolver, avisar,
+    estado, setSolicitud, procesando, activarRecordatorio, desactivarRecordatorio, devolver, avisar,
   } = useBiblioteca();
   const permiso = usePermiso('notificaciones');
   const prestamos = LIBROS.filter(({ isbn }) => estado.prestamos[isbn]);
@@ -56,6 +56,10 @@ export default function MisReservas() {
                 </Text>}
           </View>
           {estado.aviso && <View style={comun.tarjeta}><Text accessibilityRole="alert" style={comun.cuerpo}>{estado.aviso}</Text></View>}
+          {estado.avisosEntrega.length > 0 && <View style={comun.tarjeta}>
+            <Text style={comun.etiqueta}>Avisos de entrega</Text>
+            <Text accessibilityLiveRegion="polite" style={comun.cuerpo}>{estado.avisosEntrega.join('\n')}</Text>
+          </View>}
           <Text accessibilityRole="header" style={comun.seccion}>Préstamos</Text>
         </View>
       }
@@ -79,7 +83,7 @@ export default function MisReservas() {
           />
         </View>
       }
-      renderItem={({ item }) => <TarjetaPrestamo libro={item} prestamo={estado.prestamos[item.isbn]}
+      renderItem={({ item }) => <TarjetaPrestamo libro={item} prestamo={estado.prestamos[item.isbn]} procesando={procesando.has(item.isbn)}
         cambiarRecordatorio={(activo) => recordar(item, activo)} devolver={() => { void devolver(item.isbn); }} />}
     />
   );

@@ -6,7 +6,7 @@ import {
   crearBiblioteca, entregarLibro, registrarVisita, reservarLibro, type EstadoBiblioteca,
 } from '@/lib/biblioteca';
 import {
-  cancelarRecordatorio, configurarNotificaciones, notificarEntrega, programarRecordatorio,
+  cancelarRecordatorio, configurarNotificaciones, consultarNotificaciones, notificarEntrega, programarRecordatorio,
 } from '@/lib/notificaciones';
 import type { Libro } from '@/types';
 
@@ -25,12 +25,14 @@ type Acciones = {
 const Contexto = createContext<(Acciones & {
   estado: EstadoBiblioteca;
   solicitud: string | null;
+  procesando: ReadonlySet<string>;
   setSolicitud: React.Dispatch<React.SetStateAction<string | null>>;
 }) | null>(null);
 
 export function BibliotecaProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState(crearBiblioteca);
   const [solicitud, setSolicitud] = useState<string | null>(null);
+  const [procesando, setProcesando] = useState<ReadonlySet<string>>(() => new Set());
   const actual = useRef(estado);
   const ocupados = useRef(new Set<string>());
 
@@ -52,10 +54,15 @@ export function BibliotecaProvider({ children }: { children: ReactNode }) {
       if (!prestamo || enCurso.has(isbn)) return;
       if (operacion === 'activar' && prestamo.recordatorio) return;
       enCurso.add(isbn);
+      setProcesando(new Set(enCurso));
 
       try {
         let recordatorio = prestamo.recordatorio;
         if (operacion === 'activar') {
+          if (!(await consultarNotificaciones()).granted) {
+            avisar('Las notificaciones están desactivadas. Consultá el vencimiento en Mis reservas.');
+            return;
+          }
           recordatorio = await programarRecordatorio(titulo);
         } else if (recordatorio) {
           await cancelarRecordatorio(recordatorio);
@@ -75,6 +82,7 @@ export function BibliotecaProvider({ children }: { children: ReactNode }) {
         avisar('No pudimos completar la acción. Volvé a intentarlo.');
       } finally {
         enCurso.delete(isbn);
+        setProcesando(new Set(enCurso));
       }
     }
 
@@ -94,9 +102,13 @@ export function BibliotecaProvider({ children }: { children: ReactNode }) {
         actualizar(siguiente);
         if (persona.id === LECTOR.id) {
           const avisoEntrega = `Ya podés retirar «${libro.titulo}». Tu préstamo quedó registrado.`;
+          const mostrarEntrega = () => {
+            const vigente = actual.current;
+            actualizar({ ...vigente, avisosEntrega: [...vigente.avisosEntrega, avisoEntrega] });
+          };
           notificarEntrega(libro.titulo)
-            .then((enviada) => { if (!enviada) avisar(avisoEntrega); })
-            .catch(() => avisar(avisoEntrega));
+            .then((enviada) => { if (!enviada) mostrarEntrega(); })
+            .catch(mostrarEntrega);
           return 'Entrega registrada para tu cuenta.';
         }
         return `Entrega registrada para ${persona.nombre}.`;
@@ -108,8 +120,8 @@ export function BibliotecaProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ estado, solicitud, setSolicitud, ...acciones }),
-    [estado, solicitud, acciones],
+    () => ({ estado, solicitud, setSolicitud, procesando, ...acciones }),
+    [estado, solicitud, procesando, acciones],
   );
 
   return <Contexto.Provider value={value}>{children}</Contexto.Provider>;
