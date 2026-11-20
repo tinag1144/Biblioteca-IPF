@@ -122,6 +122,8 @@ Para verificar la cancelación en el teléfono, activá **Recordarme** y esperá
 
 Si el diálogo de notificaciones falla en Expo Go, tocá **Abrir Ajustes**, habilitá las notificaciones de **Expo Go** y volvé a Biblioteca IPF. La app vuelve a consultar el permiso y programa el recordatorio si lo habilitaste.
 
+Si Expo Go en Android falla al crear el canal `prestamos`, la demostración usa el canal predeterminado de Expo Go. En ese caso, dejá la app abierta durante los 15 segundos. El aviso que se publica al terminar la espera es una notificación local de Android.
+
 ## Análisis
 
 [Respuestas de las partes B a E](RESPUESTAS.md).

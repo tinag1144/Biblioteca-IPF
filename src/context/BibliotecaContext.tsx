@@ -63,7 +63,9 @@ export function BibliotecaProvider({ children }: { children: ReactNode }) {
             avisar('Las notificaciones están desactivadas. Consultá el vencimiento en Mis reservas.');
             return;
           }
-          recordatorio = await programarRecordatorio(titulo);
+          recordatorio = await programarRecordatorio(titulo, () => {
+            avisar('No pudimos mostrar el recordatorio. Consultá la fecha en Mis reservas.');
+          });
         } else if (recordatorio) {
           await cancelarRecordatorio(recordatorio);
           recordatorio = null;
